@@ -42,6 +42,7 @@ const movieSchema = new Schema({
     },
   },
   thumbnail: {
+    type: String,
     required: true,
     validate: {
       validator(v) {
