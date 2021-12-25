@@ -3,7 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, errors } = require('celebrate');
-const rateLimit = require('express-rate-limit');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 const routes = require('./routes/index');
@@ -17,7 +16,6 @@ const {
   joiObjectSignup,
   joiObjectSignin,
 } = require('./utils/JoiOptsObjs');
-const rateLimitOpts = require('./utils/rateLimitOpts');
 const centralErrorHandler = require('./utils/centralErrorHandler');
 
 const { PORT = 3000, NODE_ENV, MONGO_URL } = process.env;
@@ -31,8 +29,6 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
-
-app.use(rateLimit(rateLimitOpts));
 
 app.post('/signup', celebrate(joiObjectSignup), createUser);
 app.post('/signin', celebrate(joiObjectSignin), authUser);
