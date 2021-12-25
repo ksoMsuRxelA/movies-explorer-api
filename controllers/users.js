@@ -8,8 +8,7 @@ const ConflictError = require('../utils/customErrors/ConflictError');
 
 const getCurrentUser = async (req, res, next) => {
   try {
-    const id = req.user._id;
-    const user = await User.findById(id);
+    const user = await User.findById(req.user._id);
     return res.status(200).send({ data: user });
   } catch (err) {
     next(err);
@@ -19,9 +18,16 @@ const getCurrentUser = async (req, res, next) => {
 const patchUserData = async (req, res, next) => {
   try {
     const { email, name } = req.body;
-    const user = await User.findByIdAndUpdate(req.user._id, { email, name }, { new: true });
+    const isExist = await User.findOne({ email });
+    if (isExist) {
+      throw new ConflictError('Пользователь с таким email уже существует. Попробуйте другой email.');
+    }
+    const user = await User.findOneAndUpdate({ _id: req.user._id }, { email, name }, { new: true, runValidators: true });
     return res.status(200).send({ data: user });
   } catch (err) {
+    if (err.name === 'ValidationError' || err.name === 'Error') {
+      next(new DataError('Введенные Вами данные оказались невалидными. Попробуйте снова.'));
+    }
     next(err);
   }
 };
@@ -51,7 +57,7 @@ const createUser = async (req, res, next) => {
       next(new ConflictError('Пользователь с таким email уже существует.'));
     }
     if (err.name === 'ValidationError' || err.name === 'Error') {
-      next(new DataError('Невалидный email. Попробуйте снова.'));
+      next(new DataError('Введенные Вами email или имя оказались невалидными. Попробуйте еще раз.'));
     }
     next(err);
   }
