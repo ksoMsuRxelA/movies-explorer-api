@@ -3,12 +3,9 @@
   "rules": {
     "no-console": "off",
     "no-underscore-dangle": ["error", { "allow": ["_id"]}],
-    "no-unused-vars": [2, { "args": "none" }],
-    "arrow-body-style": "off",
-    "max-len": "off",
-    "max-classes-per-file": "off",
-    "consistent-return": "off",
-    "no-undef-init": "off",
-    "no-useless-escape": "off"
+    "consistent-return": "off"// извините, но если я удалю это правило,
+                              // то в самом конце блока каждой асинхронной функции придется
+                              // что-то да возвращать...например return null;
+                              // я могу это сделать, но код странет еще хуже...
   }
 }

@@ -9,7 +9,7 @@ const ConflictError = require('../utils/customErrors/ConflictError');
 const getCurrentUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
-    return res.status(200).send({ data: user });
+    return res.send({ data: user });
   } catch (err) {
     next(err);
   }
@@ -22,11 +22,13 @@ const patchUserData = async (req, res, next) => {
     if (isExist) {
       throw new ConflictError('Пользователь с таким email уже существует. Попробуйте другой email.');
     }
-    const user = await User.findOneAndUpdate({ _id: req.user._id }, { email, name }, { new: true, runValidators: true });
-    return res.status(200).send({ data: user });
+    const user = await User
+      .findOneAndUpdate({ _id: req.user._id }, { email, name }, { new: true, runValidators: true });
+    return res.send({ data: user });
   } catch (err) {
     if (err.name === 'ValidationError' || err.name === 'Error') {
       next(new DataError('Введенные Вами данные оказались невалидными. Попробуйте снова.'));
+      return;
     }
     next(err);
   }
@@ -53,11 +55,13 @@ const createUser = async (req, res, next) => {
       _id: newUser._id,
     });
   } catch (err) {
-    if (err.name === 'MongoServerError' && err.code === 11000) {
+    if (err.code === 11000) {
       next(new ConflictError('Пользователь с таким email уже существует.'));
+      return;
     }
     if (err.name === 'ValidationError' || err.name === 'Error') {
       next(new DataError('Введенные Вами email или имя оказались невалидными. Попробуйте еще раз.'));
+      return;
     }
     next(err);
   }

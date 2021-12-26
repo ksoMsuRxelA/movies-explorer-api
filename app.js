@@ -2,20 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const { celebrate, errors } = require('celebrate');
+const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const auth = require('./middlewares/auth');
 const routes = require('./routes/index');
-const {
-  createUser,
-  authUser,
-  unauthUser,
-} = require('./controllers/users');
 const NotFoundError = require('./utils/customErrors/NotFoundError');
-const {
-  joiObjectSignup,
-  joiObjectSignin,
-} = require('./utils/JoiOptsObjs');
 const centralErrorHandler = require('./utils/centralErrorHandler');
 
 const { PORT = 3000, NODE_ENV, MONGO_URL } = process.env;
@@ -30,13 +20,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
 
-app.post('/signup', celebrate(joiObjectSignup), createUser);
-app.post('/signin', celebrate(joiObjectSignin), authUser);
-app.post('/signout', unauthUser);
+app.use(routes);
 
-app.use(auth);
-
-app.use('/', routes);
 app.use((req, res, next) => {
   next(new NotFoundError('Такой страницы не существует.'));
 });

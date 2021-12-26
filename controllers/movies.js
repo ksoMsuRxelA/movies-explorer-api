@@ -3,11 +3,9 @@ const DataError = require('../utils/customErrors/DataError');
 const NotFoundError = require('../utils/customErrors/NotFoundError');
 const ForbiddenError = require('../utils/customErrors/ForbiddenError');
 
-const getSavedMovies = (req, res, next) => {
-  return Movie.find({})
-    .then((movies) => res.status(200).send({ data: movies }))
-    .catch(next);
-};
+const getSavedMovies = (req, res, next) => Movie.find({})
+  .then((movies) => res.send({ data: movies }))
+  .catch(next);
 
 const postNewMovie = (req, res, next) => {
   const {
@@ -41,6 +39,7 @@ const postNewMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new DataError(`Переданы некорректные данные: ${err.message}`));
+        return;
       }
       next(err);
     });
@@ -58,13 +57,14 @@ const deleteMovieById = async (req, res, next) => {
     }
     const movieById = await Movie.findByIdAndRemove(movieId);
     if (movieById) {
-      return res.status(200).send({ data: movieById });
+      return res.send({ data: movieById });
     }
   } catch (err) {
     if (err.name === 'CastError') {
       next(new DataError(`Фильм с идентификатором ${movieId} не был найден и не удален.`));
+    } else {
+      next(err);
     }
-    next(err);
   }
 };
 

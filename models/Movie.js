@@ -1,5 +1,7 @@
 const { Schema, model, Types } = require('mongoose');
 
+const urlRegEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gm;
+
 const movieSchema = new Schema({
   country: {
     type: String,
@@ -26,8 +28,7 @@ const movieSchema = new Schema({
     required: true,
     validate: {
       validator(v) {
-        const regEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
-        return regEx.test(v);
+        return urlRegEx.test(v);
       },
     },
   },
@@ -36,8 +37,7 @@ const movieSchema = new Schema({
     required: true,
     validate: {
       validator(v) {
-        const regEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
-        return regEx.test(v);
+        return urlRegEx.test(v);
       },
     },
   },
@@ -46,8 +46,7 @@ const movieSchema = new Schema({
     required: true,
     validate: {
       validator(v) {
-        const regEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
-        return regEx.test(v);
+        return urlRegEx.test(v);
       },
     },
   },
@@ -57,7 +56,7 @@ const movieSchema = new Schema({
     required: true,
   },
   movieId: {
-    type: String,
+    type: Number,
     required: true,
   },
   nameRU: {

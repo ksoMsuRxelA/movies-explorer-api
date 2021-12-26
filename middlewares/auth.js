@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
       throw new UnauthError('Неавторизованный запрос. Пройдите авторизацию.');
     }
 
-    let payload = undefined;
+    let payload;
     const { NODE_ENV, JWT_SECRET } = process.env;
     try {
       payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'secret_code');

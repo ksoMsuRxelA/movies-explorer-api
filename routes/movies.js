@@ -1,19 +1,16 @@
 const router = require('express').Router();
-const { celebrate } = require('celebrate');
 const {
   getSavedMovies,
   postNewMovie,
   deleteMovieById,
 } = require('../controllers/movies');
-const {
-  joiObjectMoviePost,
-  joiObjectMovieDel,
-} = require('../utils/JoiOptsObjs');
+
+const { joiMoviePostValidate, joiMovieDelValidate } = require('../utils/JoiValidation');
 
 router.get('/movies', getSavedMovies);
 
-router.post('/movies', celebrate(joiObjectMoviePost), postNewMovie);
+router.post('/movies', joiMoviePostValidate, postNewMovie);
 
-router.delete('/movies/:movieId', celebrate(joiObjectMovieDel), deleteMovieById);
+router.delete('/movies/:movieId', joiMovieDelValidate, deleteMovieById);
 
 module.exports = router;
