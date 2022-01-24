@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+const { cors } = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./routes/index');
 const NotFoundError = require('./utils/customErrors/NotFoundError');
@@ -19,6 +20,15 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
+app.use(cors({
+  origin: [
+    'https://moviechef.nomoredomains.rocks',
+    'http://moviechef.nomoredomains.rocks',
+    'http://localhost:3000',
+  ],
+  credentials: true,
+  methods: 'GET, DELETE, PUT, PATCH, POST',
+}));
 
 app.use(routes);
 
