@@ -21,11 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
 app.use(cors({
-  origin: [
-    'https://moviechef.nomoredomains.rocks',
-    'http://moviechef.nomoredomains.rocks',
-    'http://localhost:3000',
-  ],
+  origin: '*',
   credentials: true,
   preflightContinue: false,
   methods: 'GET, DELETE, PUT, PATCH, POST',
