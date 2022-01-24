@@ -23,7 +23,7 @@ app.use(requestLogger);
 app.use(routes);
 
 app.use((req, res, next) => {
-  next(new NotFoundError('Такой страницы не существует.'));
+  next(new NotFoundError('404 Страница по указанному маршруту не найдена.'));
 });
 
 app.use(errorLogger);

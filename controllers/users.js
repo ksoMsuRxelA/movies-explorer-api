@@ -20,14 +20,14 @@ const patchUserData = async (req, res, next) => {
     const { email, name } = req.body;
     const isExist = await User.findOne({ email });
     if (isExist) {
-      throw new ConflictError('Пользователь с таким email уже существует. Попробуйте другой email.');
+      throw new ConflictError('Пользователь с таким email уже существует.');
     }
     const user = await User
       .findOneAndUpdate({ _id: req.user._id }, { email, name }, { new: true, runValidators: true });
     return res.send({ data: user });
   } catch (err) {
     if (err.name === 'ValidationError' || err.name === 'Error') {
-      next(new DataError('Введенные Вами данные оказались невалидными. Попробуйте снова.'));
+      next(new DataError('При обновлении профиля произошла ошибка.'));
       return;
     }
     next(err);
@@ -60,7 +60,7 @@ const createUser = async (req, res, next) => {
       return;
     }
     if (err.name === 'ValidationError' || err.name === 'Error') {
-      next(new DataError('Введенные Вами email или имя оказались невалидными. Попробуйте еще раз.'));
+      next(new DataError('При регистрации пользователя произошла ошибка.'));
       return;
     }
     next(err);
@@ -73,12 +73,12 @@ const authUser = async (req, res, next) => {
 
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-      throw new UnauthError('Неправильные email/password. Попробуйте еще раз.');
+      throw new UnauthError('Вы ввели неправильный логин или пароль. ');
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new UnauthError('Неправильные email/password. Попробуйте еще раз.');
+      throw new UnauthError('Вы ввели неправильный логин или пароль.');
     }
 
     const { NODE_ENV, JWT_SECRET } = process.env;

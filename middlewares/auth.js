@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     const token = req.cookies.jwt;
 
     if (!token) {
-      throw new UnauthError('Неавторизованный запрос. Пройдите авторизацию.');
+      throw new UnauthError('При авторизации произошла ошибка. Токен не передан или передан не в том формате.');
     }
 
     let payload;
@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
     try {
       payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'secret_code');
     } catch (err) {
-      throw new UnauthError('Невалидный токен авторизации.');
+      throw new UnauthError('При авторизации произошла ошибка. Переданный токен некорректен.');
     }
 
     req.user = payload;
