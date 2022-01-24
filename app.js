@@ -22,9 +22,9 @@ app.use(cookieParser());
 app.use(requestLogger);
 app.use(cors({
   origin: '*',
-  credentials: true,
   preflightContinue: false,
   methods: 'GET, DELETE, PUT, PATCH, POST',
+  optionsSuccessStatus: 204,
 }));
 
 app.use(routes);
