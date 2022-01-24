@@ -27,6 +27,7 @@ app.use(cors({
     'http://localhost:3000',
   ],
   credentials: true,
+  preflightContinue: false,
   methods: 'GET, DELETE, PUT, PATCH, POST',
 }));
 
