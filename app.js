@@ -20,12 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
-app.use(cors({
-  origin: '*',
-  preflightContinue: false,
-  methods: 'GET, DELETE, PUT, PATCH, POST',
-  optionsSuccessStatus: 204,
-}));
+app.use(cors());
 
 app.use(routes);
 
