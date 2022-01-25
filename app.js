@@ -18,6 +18,7 @@ mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(requestLogger);
 app.use(cors({
   origin: [
@@ -26,9 +27,8 @@ app.use(cors({
     'http://localhost:3000',
   ],
   credentials: true,
-  methods: 'GET,DELETE,PATCH,POST',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
 }));
-app.use(cookieParser());
 
 app.use(routes);
 
