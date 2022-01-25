@@ -20,7 +20,15 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(requestLogger);
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://moviechef.nomoredomains.rocks',
+    'https://moviechef.nomoredomains.rocks',
+    'http://localhost:3000',
+  ],
+  credentials: true,
+  methods: 'GET,DELETE,PATCH,POST',
+}));
 
 app.use(routes);
 
