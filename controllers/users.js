@@ -92,7 +92,7 @@ const authUser = async (req, res, next) => {
     return res.status(200).cookie('jwt', token, {
       maxAge: 3600000 * 24 * 7,
       httpOnly: true,
-    }).send({ message: 'Welcome back.' });
+    }).send({ _id: user._id, name: user.name, email: user.email });
   } catch (err) {
     next(err);
   }
