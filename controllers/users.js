@@ -18,12 +18,25 @@ const getCurrentUser = async (req, res, next) => {
 const patchUserData = async (req, res, next) => {
   try {
     const { email, name } = req.body;
+    if (email === ' ') {
+      const user = await User
+        .findOneAndUpdate(
+          { _id: req.user._id },
+          { name },
+          { new: true, runValidators: true },
+        );
+      return res.send({ data: user });
+    }
     const isExist = await User.findOne({ email });
     if (isExist) {
       throw new ConflictError('Пользователь с таким email уже существует.');
     }
     const user = await User
-      .findOneAndUpdate({ _id: req.user._id }, { email, name }, { new: true, runValidators: true });
+      .findOneAndUpdate(
+        { _id: req.user._id },
+        { email, name },
+        { new: true, runValidators: true },
+      );
     return res.send({ data: user });
   } catch (err) {
     if (err.name === 'ValidationError' || err.name === 'Error') {
