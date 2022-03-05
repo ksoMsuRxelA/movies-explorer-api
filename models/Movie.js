@@ -1,6 +1,6 @@
 const { Schema, model, Types } = require('mongoose');
 
-const urlRegEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\/?#[\]@!$&'()*+,;=.]+$/gm;
+// const urlRegEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\/?#[\]@!$&'()*+,;=.]+$/gm;
 
 const movieSchema = new Schema({
   country: {
@@ -28,9 +28,9 @@ const movieSchema = new Schema({
     required: true,
     validate: {
       validator(v) {
-        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\/?#[\]@!$&'()*+,;=.]+$/g.test(v);
+        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/g.test(v);
       },
-      message: `Невалидное значение ссылки на изображение.`,
+      message: 'Невалидное значение ссылки на изображение.',
     },
   },
   trailer: {
@@ -38,9 +38,9 @@ const movieSchema = new Schema({
     required: true,
     validate: {
       validator(v) {
-        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\/?#[\]@!$&'()*+,;=.]+$/g.test(v);
+        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/g.test(v);
       },
-      message: `Невалидное значение ссылки на трейлер.`,
+      message: 'Невалидное значение ссылки на трейлер.',
     },
   },
   thumbnail: {
@@ -48,9 +48,9 @@ const movieSchema = new Schema({
     required: true,
     validate: {
       validator(v) {
-        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:\/?#[\]@!$&'()*+,;=.]+$/g.test(v);
+        return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/g.test(v);
       },
-      message: `Невалидное значение ссылки на миниатюру.`,
+      message: 'Невалидное значение ссылки на миниатюру.',
     },
   },
   owner: {

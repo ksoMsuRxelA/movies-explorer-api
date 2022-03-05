@@ -3,7 +3,7 @@ const DataError = require('../utils/customErrors/DataError');
 const NotFoundError = require('../utils/customErrors/NotFoundError');
 const ForbiddenError = require('../utils/customErrors/ForbiddenError');
 
-const getSavedMovies = (req, res, next) => Movie.find({})
+const getSavedMovies = (req, res, next) => Movie.find({ owner: req.user._id })
   .then((movies) => res.send({ data: movies }))
   .catch(next);
 
