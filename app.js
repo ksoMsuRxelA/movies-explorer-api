@@ -25,6 +25,7 @@ app.use(cors({
     'http://moviechef.nomoredomains.rocks',
     'https://moviechef.nomoredomains.rocks',
     'http://localhost:3000',
+    'http://localhost:3001',
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
